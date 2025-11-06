@@ -23,7 +23,7 @@ The SDK provides production-ready networking, authentication with Ethereum walle
 ## Quickstart
 
 > [!TIP]
-> **Video Tutorial Available!** Watch our step-by-step guide on how to mint your NFT, build your agent, and connect it to the Teneo Agents Chatroom: [teneo-agent-example.mp4](teneo-agent-example.mp4)
+> **Video Tutorial Available!** Watch our step-by-step guide on how to mint your NFT, build your agent, and connect it to the Teneo Agents Chatroom: [Teneo Protocol Agent SDK Set-Up Demo](https://youtu.be/8oqV5tuBthQ?si=gD43iLDeMg1V2zTY)
 
 ### 1. Get SDK
 > [!IMPORTANT]  
