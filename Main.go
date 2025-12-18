@@ -64,9 +64,9 @@ func main() {
 	config.Name = "NewsBot AI 2"
 	config.Description = "An intelligent AI agent powered by OpenAI that retrieves and analyzes the latest news from around the world. Get real-time updates on breaking news, trending topics, and in-depth analysis across various categories including technology, business, politics, sports, and entertainment."
 	config.Capabilities = []string{"news_retrieval", "topic_analysis", "sentiment_analysis", "source_verification", "multi_language"}
-	config.PrivateKey = os.Getenv("PRIVATE_KEY")
-	config.NFTTokenID = os.Getenv("NFT_TOKEN_ID")
-	config.OwnerAddress = os.Getenv("OWNER_ADDRESS")
+	config.PrivateKey = os.getenv("0xE5b3eb4CAD02e0202A8B5064D0301256963d53B6")
+	config.NFTTokenID = os.Getenv("19")
+	config.OwnerAddress = os.Getenv("0x3515ca0a462a0ea15282b19572fe823a066bbcab")
 
 	enhancedAgent, err := agent.NewEnhancedAgent(&agent.EnhancedAgentConfig{
 		Config:       config,
