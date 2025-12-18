@@ -1,47 +1,83 @@
-module github.com/TeneoProtocolAI/teneo-agent-sdk
+package main
 
-go 1.24.0
+import (
+	"context"
+	"fmt"
+	"log"
+	"os"
+	"strings"
 
-toolchain go1.24.9
-
-require (
-	github.com/ethereum/go-ethereum v1.16.5
-	github.com/golang-jwt/jwt/v5 v5.2.0
-	github.com/gorilla/websocket v1.5.3
-	github.com/redis/go-redis/v9 v9.16.0
-	github.com/sashabaranov/go-openai v1.41.2
+	"github.com/TeneoProtocolAI/teneo-agent-sdk/pkg/agent"
+	"github.com/joho/godotenv"
 )
 
-require (
-	github.com/Microsoft/go-winio v0.6.2 // indirect
-	github.com/StackExchange/wmi v1.2.1 // indirect
-	github.com/bits-and-blooms/bitset v1.24.1 // indirect
-	github.com/cespare/xxhash/v2 v2.3.0 // indirect
-	github.com/consensys/gnark-crypto v0.18.0 // indirect
-	github.com/crate-crypto/go-eth-kzg v1.4.0 // indirect
-	github.com/crate-crypto/go-ipa v0.0.0-20240724233137-53bbb0ceb27a // indirect
-	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
-	github.com/deckarep/golang-set/v2 v2.6.0 // indirect
-	github.com/decred/dcrd/dcrec/secp256k1/v4 v4.4.0 // indirect
-	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
-	github.com/ethereum/c-kzg-4844/v2 v2.1.3 // indirect
-	github.com/ethereum/go-verkle v0.2.2 // indirect
-	github.com/fsnotify/fsnotify v1.7.0 // indirect
-	github.com/go-ole/go-ole v1.3.0 // indirect
-	github.com/google/uuid v1.3.0 // indirect
-	github.com/holiman/uint256 v1.3.2 // indirect
-	github.com/klauspost/compress v1.17.0 // indirect
-	github.com/mitchellh/mapstructure v1.5.0 // indirect
-	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
-	github.com/shirou/gopsutil v3.21.4-0.20210419000835-c7a38de76ee5+incompatible // indirect
-	github.com/supranational/blst v0.3.16 // indirect
-	github.com/tklauser/go-sysconf v0.3.12 // indirect
-	github.com/tklauser/numcpus v0.6.1 // indirect
-	golang.org/x/crypto v0.43.0 // indirect
-	golang.org/x/exp v0.0.0-20231110203233-9a3e6036ecaa // indirect
-	golang.org/x/sync v0.17.0 // indirect
-	golang.org/x/sys v0.37.0 // indirect
-)
+type NewsbotAi002Agent struct{}
 
-// Pin crypto to version compatible with Go 1.21
-replace golang.org/x/crypto => golang.org/x/crypto v0.16.0
+func (a *NewsbotAi002Agent) ProcessTask(ctx context.Context, task string) (string, error) {
+	log.Printf("Processing task: %s", task)
+
+	// Clean up the task input
+	task = strings.TrimSpace(task)
+	task = strings.TrimPrefix(task, "/")
+	taskLower := strings.ToLower(task)
+
+	// Split into command and arguments
+	parts := strings.Fields(taskLower)
+	if len(parts) == 0 {
+		return "No command provided. Available commands: search, trending, analyze, sources, latest", nil
+	}
+
+	command := parts[0]
+	args := parts[1:]
+
+	// Route to appropriate command handler
+	switch command {
+	case "search":
+		// TODO: Implement Search for news articles matching specific keywords or topics
+		return "Command 'search' executed successfully", nil
+
+	case "trending":
+		// TODO: Implement Display current trending news topics and stories
+		return "Command 'trending' executed successfully", nil
+
+	case "analyze":
+		// TODO: Implement Provide in-depth analysis of a specific news topic
+		return "Command 'analyze' executed successfully", nil
+
+	case "sources":
+		// TODO: Implement List all monitored news sources and their reliability scores
+		return "Command 'sources' executed successfully", nil
+
+	case "latest":
+		// TODO: Implement Get the latest news from specified category (tech, business, sports, etc.)
+		return "Command 'latest' executed successfully", nil
+
+	default:
+		return fmt.Sprintf("Unknown command '%s'. Available commands: search, trending, analyze, sources, latest", command), nil
+	}
+}
+
+func main() {
+	godotenv.Load()
+	config := agent.DefaultConfig()
+
+	config.Name = "NewsBot AI 2"
+	config.Description = "An intelligent AI agent powered by OpenAI that retrieves and analyzes the latest news from around the world. Get real-time updates on breaking news, trending topics, and in-depth analysis across various categories including technology, business, politics, sports, and entertainment."
+	config.Capabilities = []string{"news_retrieval", "topic_analysis", "sentiment_analysis", "source_verification", "multi_language"}
+	config.PrivateKey = os.Getenv("PRIVATE_KEY")
+	config.NFTTokenID = os.Getenv("NFT_TOKEN_ID")
+	config.OwnerAddress = os.Getenv("OWNER_ADDRESS")
+
+	enhancedAgent, err := agent.NewEnhancedAgent(&agent.EnhancedAgentConfig{
+		Config:       config,
+		AgentHandler: &NewsbotAi002Agent{},
+	})
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	log.Println("Starting NewsBot AI 2...")
+	enhancedAgent.Run()
+}
+
